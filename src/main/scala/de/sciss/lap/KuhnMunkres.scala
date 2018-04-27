@@ -126,8 +126,6 @@ object KuhnMunkres {
           q == t && {
             s = inf
             l = 0
-
-            l = 0
             while (l < n) {
               if (slack(l) != 0 && slack(l) < s) {
                 s = slack(l)
