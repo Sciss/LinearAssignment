@@ -8,5 +8,8 @@ lazy val root = project.in(file("."))
     description          := "Scala implementation of linear assignment problem algorithms such as Hungarian or Kuhn-Munkres and Jonker-Volgenant.",
     homepage             := Some(url(s"https://github.com/Sciss/${name.value}")),
     licenses             := Seq("LGPL v2.1+" -> url("http://www.gnu.org/licenses/lgpl-2.1.txt")),
-    scalacOptions       ++= Seq("-deprecation", "-unchecked", "-feature", "-encoding", "utf8", "-Xfuture", "-Xlint:-stars-align,_")
+    scalacOptions       ++= Seq("-deprecation", "-unchecked", "-feature", "-encoding", "utf8", "-Xfuture", "-Xlint:-stars-align,_"),
+    libraryDependencies ++= Seq(
+      "org.scalatest" %% "scalatest" % "3.0.5" % "test"
+    )
   )
