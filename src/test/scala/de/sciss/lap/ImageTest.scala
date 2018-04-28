@@ -22,8 +22,7 @@ object ImageTest {
   case class Config(fIn: File = file("in"), fOut: File = file("out"),
                     wOut: Int = 0, hOut: Int = 0,
                     invert: Boolean = false, squareCost: Boolean = true,
-//                    maxDist: Int = 1000,
-                    a: Algorithm = KuhnMunkres)
+                    maxDist: Int = 1000, a: Algorithm = KuhnMunkres)
 
   def main(args: Array[String]): Unit = {
     val default = Config()
@@ -47,10 +46,10 @@ object ImageTest {
         .validate { v => if (v >= 1) success else failure("Must be >= 1") }
         .text ("Output image height in pixels.")
         .action { (v, c) => c.copy(hOut = v) }
-//      opt[Int]('m', "max-dist")
-//        .validate { v => if (v >= 1) success else failure("Must be >= 1") }
-//        .text (s"Maximum pixel travel distance before clipping cost (default: ${default.maxDist}).")
-//        .action { (v, c) => c.copy(maxDist = v) }
+      opt[Int]('m', "max-dist")
+        .validate { v => if (v >= 1) success else failure("Must be >= 1") }
+        .text (s"Maximum pixel travel distance before clipping cost (default: ${default.maxDist}).")
+        .action { (v, c) => c.copy(maxDist = v) }
       opt[Unit]("invert")
         .text ("Invert pixel selection (drop dark pixels instead of bright).")
         .action { (_, c) => c.copy(invert = true) }
@@ -98,8 +97,8 @@ object ImageTest {
     val sx      = wOut.toFloat / wIn
     val sy      = hOut.toFloat / hIn
 
-//    val maxDist1  = if (squareCost) maxDist * maxDist else maxDist
-//    val maxCost   = (10 * inSize).toFloat
+    val maxDist1  = if (squareCost) maxDist * maxDist else maxDist
+    val maxCost   = (10 * inSize).toFloat
 
     val matrix  = sel.iterator.map { pix =>
       val x1 = (pix.off % wIn) * sx
@@ -114,7 +113,7 @@ object ImageTest {
         } else {
           math.sqrt(dx * dx + dy * dy).toFloat
         }
-        d // if (d < maxDist1) d else maxCost
+        if (d < maxDist1) d else maxCost
       }
       //      println(c.mkString("[", ", ", "]"))
       c
@@ -142,7 +141,7 @@ object ImageTest {
     println(s" took ${(t2-t1)/1000}sec.")
 
     val imgOut = new BufferedImage(wOut, hOut, BufferedImage.TYPE_INT_RGB)
-    rowMap.iterator.zipWithIndex.foreach { case (ri, ci) =>
+    rowMap.iterator.zipWithIndex.foreach { case (ci, ri) =>
       val rgb = sel(ri).rgb
       val x   = ci % wOut
       val y   = ci / wOut
