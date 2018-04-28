@@ -15,7 +15,7 @@ class KuhnMunkresSpec extends FlatSpec with Matchers {
     )
     val rowM = new Array[Int](4)
     val colM = new Array[Int](4)
-    KuhnMunkres(prio, colM, rowM)
+    KuhnMunkres(prio, rowMap = rowM, colMap = colM)
 //    println(rowM.mkString("row: [", ", ", "]"))
 //    println(colM.mkString("col: [", ", ", "]"))
 
@@ -41,7 +41,7 @@ class KuhnMunkresSpec extends FlatSpec with Matchers {
     )
     val rowM = new Array[Int](4)
     val colM = new Array[Int](4)
-    KuhnMunkres(prio, colM, rowM)
+    KuhnMunkres(prio, rowMap = rowM, colMap = colM)
 //    println(rowM.mkString("row: [", ", ", "]"))
 //    println(colM.mkString("col: [", ", ", "]"))
 
@@ -54,7 +54,7 @@ class KuhnMunkresSpec extends FlatSpec with Matchers {
       val prio = Array.fill(M)(Array.fill(M)(r.nextInt(N).toFloat))
       val rowM = new Array[Int](M)
       val colM = new Array[Int](M)
-      KuhnMunkres(prio, colM, rowM)
+      KuhnMunkres(prio, rowMap = rowM, colMap = colM)
       (prio, rowM)
     }
 

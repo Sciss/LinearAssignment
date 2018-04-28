@@ -18,7 +18,10 @@ import java.util
 // adapted from https://raw.githubusercontent.com/hrldcpr/hungarian/master/asp.cpp
 // which in turn is adapted from Dominic Battre's implementation of the Hungarian algorithm by hbc@mit.edu
 // original license is MIT
-object KuhnMunkres {
+object KuhnMunkres extends Algorithm {
+  def solveLAP(matrix: Array[Array[Float]], rowMap: Array[Int], colMap: Array[Int]): Unit =
+    apply(matrix, rowMap = rowMap, colMap = colMap)
+
   /** Given an n x n cost `matrix`, determines the best 1 to 1 mapping between rows and columns.
     *
     * @param matrix   matrix with costs; costs must be greater than or equal to zero.
@@ -29,9 +32,8 @@ object KuhnMunkres {
     */
   def apply(matrix: Array[Array[Float]], colMap: Array[Int], rowMap: Array[Int],
             progress: (Int, Int) => Unit = null): Unit = {
-    val m = rowMap.length
-    val n = colMap.length
-    require (m == n)
+    val n = rowMap.length
+    require (n == colMap.length)
     val hp = progress != null
 
     var k: Int    = 0
@@ -44,11 +46,11 @@ object KuhnMunkres {
     var unmatched: Int = 0
 
     util.Arrays.fill(colMap, 0, n, 0)
-    util.Arrays.fill(rowMap, 0, m, 0)
+    util.Arrays.fill(rowMap, 0, n, 0)
 
     val parentRow   = new Array[Int  ](n)
-    val unchosenRow = new Array[Int  ](m)
-    val rowDec      = new Array[Float](m)
+    val unchosenRow = new Array[Int  ](n)
+    val rowDec      = new Array[Float](n)
     val colInc      = new Array[Float](n)
     val slack       = new Array[Float](n)
     val slackRow    = new Array[Int  ](n)
@@ -78,7 +80,7 @@ object KuhnMunkres {
       }
       l += 1
     }
-    val INF = max * 2 // XXX TODO --- test if Float.MaxValue would work
+    val BIG = max * 2 // XXX TODO --- test if Float.MaxValue would work
 
     // initialize
     l = 0
@@ -86,13 +88,13 @@ object KuhnMunkres {
       rowMap(l)    = -1
       parentRow(l) = -1
       colInc(l)    = 0.0f
-      slack(l)     = INF
+      slack(l)     = BIG
       l += 1
     }
 
     t = 0
     k = 0
-    while (k < m) {
+    while (k < n) {
       val row = matrix(k)
       // calculate minimum element in row
       s = row(0)
@@ -157,7 +159,7 @@ object KuhnMunkres {
           }
 
           q == t && {
-            s = INF
+            s = BIG
             l = 0
             while (l < n) {
               if (slack(l) != 0 && slack(l) < s) {
@@ -221,11 +223,11 @@ object KuhnMunkres {
         l = 0
         while (l < n) {
           parentRow(l) = -1
-          slack    (l) = INF
+          slack    (l) = BIG
           l += 1
         }
         k = 0
-        while (k < m) {
+        while (k < n) {
           if (colMap(k) < 0) {
             unchosenRow(t) = k; t += 1
           }
@@ -236,7 +238,7 @@ object KuhnMunkres {
 
     // finalize result
     k = 0
-    while (k < m) {
+    while (k < n) {
       l = 0
       val row = matrix(k)
       val rd  = rowDec(k)

@@ -109,7 +109,7 @@ object ImageTest {
     println("_" * 100)
     val t1 = System.currentTimeMillis()
     var lastP = 0
-    KuhnMunkres(matrix, colMap, rowMap, progress = { (left, of) =>
+    KuhnMunkres(matrix, rowMap = rowMap, colMap = colMap, progress = { (left, of) =>
       val p = (of - left) * 100 / of
       while (lastP < p) {
         print('#')
