@@ -105,17 +105,23 @@ object ImageTest {
 
     val colMap = new Array[Int](numRows)
     val rowMap = new Array[Int](numRows)
-    println(s"Running Kuhn-Munkres (numRows = $numRows)...")
+    val a: Algorithm = JonkerVolgenant
+    println(s"Running ${a.algorithmName} (numRows = $numRows)...")
     println("_" * 100)
     val t1 = System.currentTimeMillis()
     var lastP = 0
-    KuhnMunkres(matrix, rowMap = rowMap, colMap = colMap, progress = { (left, of) =>
-      val p = (of - left) * 100 / of
-      while (lastP < p) {
-        print('#')
-        lastP += 1
-      }
-    })
+    a.solveLAP(
+      matrix,
+      rowMap = rowMap,
+      colMap = colMap
+//      progress = { (left, of) =>
+//        val p = (of - left) * 100 / of
+//        while (lastP < p) {
+//          print('#')
+//          lastP += 1
+//        }
+//      }
+    )
     val t2 = System.currentTimeMillis()
     println(s" took ${(t2-t1)/1000}sec.")
 

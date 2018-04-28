@@ -38,23 +38,26 @@ CHANGED 2004-08-13 by Harold Cooper (hbc@mit.edu) for the pyLAPJV Python module:
   *************************************************************************/
 
 object JonkerVolgenant extends Algorithm {
+  def algorithmName: String = "Jonker-Volgenant"
+
   def solveLAP(matrix: Array[Array[Float]], rowMap: Array[Int], colMap: Array[Int]): Unit =
-    apply(matrix, rowMap = rowMap, colMap = colMap, u = ???, v = ???)
+    apply(matrix, rowMap = rowMap, colMap = colMap)
 
   /** Given an n x n cost `matrix`, determines the best 1 to 1 mapping between rows and columns.
+    * Returns the total cost.
     *
     * @param matrix   matrix with costs; costs must be greater than or equal to zero.
     *                 rows and columns must be of size `rowMap.length` and `colMap.length`
     * @param colMap   will be filled with the result, mapping columns (array indices) to rows (array values)
     * @param rowMap   will be filled with the result, mapping rows (array indices) to columns (array values).
     *                 must have the same size as `colMap`.
-    * @param u        ???
-    * @param v        ???
     */
-  def apply(matrix: Array[Array[Float]], rowMap: Array[Int], colMap: Array[Int],
-            u: Array[Float], v: Array[Float]): Float = {
+  def apply(matrix: Array[Array[Float]], rowMap: Array[Int], colMap: Array[Int]): Float = {
     val n = rowMap.length
     require (n == colMap.length)
+
+    val u = new Array[Float](n)
+    val v = new Array[Float](n)
 
     var unassignedFound = false
 
@@ -87,20 +90,22 @@ object JonkerVolgenant extends Algorithm {
     val d       = new Array[Float ](n)    // 'cost-distance' in augmenting path calculation.
     val pred    = new Array[Int   ](n)    // row-predecessor of column in augmenting/alternating path.
 
-    val BIG = 100000f // XXX TODO
+    var max = 1.0f
 
     // COLUMN REDUCTION
     j = n - 1
     while (j >= 0) {    // reverse order gives better results.
       // find minimum cost over rows.
       min = matrix(0)(j)
+      if (min > max) max = min
       iMin = 0
       i = 1
       while (i < n) {
-        if (matrix(i)(j) < min) {
-          min = matrix(i)(j)
+        val c = matrix(i)(j)
+        if (c < min) {
+          min = c
           iMin = i
-        }
+        } else if (c > max) max = c
         i += 1
       }
       v(j) = min
@@ -114,6 +119,9 @@ object JonkerVolgenant extends Algorithm {
       }
       j -= 1
     }
+
+//    val BIG = 100000f
+    val BIG = max * 2 // XXX TODO --- test if Float.MaxValue would work
 
     // REDUCTION TRANSFER
     i = 0
@@ -275,15 +283,17 @@ object JonkerVolgenant extends Algorithm {
                   // if unassigned, shortest augmenting path is complete.
                   endOfPath = j
                   unassignedFound = true
-                  ??? // break
+                  k = n // break
 
                 } else { // else add to list to be scanned right away.
                   colList(k) = colList(up)
                   colList(up) = j
                   up += 1
+                  d(j) = v2
                 }
+              } else {
+                d(j) = v2
               }
-              d(j) = v2
             }
             k += 1
           }

@@ -19,6 +19,8 @@ import java.util
 // which in turn is adapted from Dominic Battre's implementation of the Hungarian algorithm by hbc@mit.edu
 // original license is MIT
 object KuhnMunkres extends Algorithm {
+  def algorithmName: String = "Kuhn-Munkres"
+
   def solveLAP(matrix: Array[Array[Float]], rowMap: Array[Int], colMap: Array[Int]): Unit =
     apply(matrix, rowMap = rowMap, colMap = colMap)
 
