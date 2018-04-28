@@ -8,7 +8,7 @@ LinearAssignment is a collection of linear assignment problem algorithms for the
 For now, these are mostly translations from the C code by Harold Cooper:
 
 - https://github.com/hrldcpr/hungarian
-- https://github.com/hrldcpr/pyLAPJV
+- https://github.com/hrldcpr/pyLAPJV (not yet implemented)
 
 which were published under MIT license. Scala translation and adaption
 (C)opyright 2018 by Hanns Holger Rutz. All rights reserved. The project is released under 

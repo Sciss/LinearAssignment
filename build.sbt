@@ -10,6 +10,8 @@ lazy val root = project.in(file("."))
     licenses             := Seq("LGPL v2.1+" -> url("http://www.gnu.org/licenses/lgpl-2.1.txt")),
     scalacOptions       ++= Seq("-deprecation", "-unchecked", "-feature", "-encoding", "utf8", "-Xfuture", "-Xlint:-stars-align,_"),
     libraryDependencies ++= Seq(
-      "org.scalatest" %% "scalatest" % "3.0.5" % "test"
+      "org.scalatest"     %% "scalatest"  % "3.0.5" % Test,
+      "com.github.scopt"  %% "scopt"      % "3.7.0" % Test,
+      "de.sciss"          %% "fileutil"   % "1.1.3" % Test
     )
   )
