@@ -15,6 +15,8 @@ which were published under MIT license. Scala translation and adaption
 the [GNU Lesser General Public License](https://raw.github.com/Sciss/LinearAssignment/master/LICENSE) v2.1+ and 
 comes with absolutely no warranties. To contact the author, send an email to `contact at sciss.de`
 
+__Note:__ Jonker-Volgenant seems to be broken; it hangs or produced non-optimum results.
+
 ## requirements / installation
 
 The project builds against Scala 2.12, 2.11 using sbt. Run the tests using `sbt test`.

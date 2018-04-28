@@ -40,8 +40,11 @@ CHANGED 2004-08-13 by Harold Cooper (hbc@mit.edu) for the pyLAPJV Python module:
 object JonkerVolgenant extends Algorithm {
   def algorithmName: String = "Jonker-Volgenant"
 
-  def solveLAP(matrix: Array[Array[Float]], rowMap: Array[Int], colMap: Array[Int]): Unit =
+  def solveLAP(matrix: Array[Array[Float]], rowMap: Array[Int], colMap: Array[Int],
+               progress: (Int, Int) => Unit = null): Unit = {
+    if (progress != null) Console.err.println(s"$algorithmName: progress not yet supported.")
     apply(matrix, rowMap = rowMap, colMap = colMap)
+  }
 
   /** Given an n x n cost `matrix`, determines the best 1 to 1 mapping between rows and columns.
     * Returns the total cost.

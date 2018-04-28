@@ -21,8 +21,9 @@ import java.util
 object KuhnMunkres extends Algorithm {
   def algorithmName: String = "Kuhn-Munkres"
 
-  def solveLAP(matrix: Array[Array[Float]], rowMap: Array[Int], colMap: Array[Int]): Unit =
-    apply(matrix, rowMap = rowMap, colMap = colMap)
+  def solveLAP(matrix: Array[Array[Float]], rowMap: Array[Int], colMap: Array[Int],
+               progress: (Int, Int) => Unit = null): Unit =
+    apply(matrix, rowMap = rowMap, colMap = colMap, progress = progress)
 
   /** Given an n x n cost `matrix`, determines the best 1 to 1 mapping between rows and columns.
     *
