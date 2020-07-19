@@ -1,11 +1,14 @@
 package de.sciss.lap
 
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-abstract class AlgoSpec extends FlatSpec with Matchers {
+import scala.collection.{Seq => CSeq}
+
+abstract class AlgoSpec extends AnyFlatSpec with Matchers {
   def algorithm: Algorithm
 
-  def cost(mat: Array[Array[Float]], map: Seq[Int]): Double =
+  def cost(mat: Array[Array[Float]], map: CSeq[Int]): Double =
     map.iterator.zipWithIndex.map { case (ci, ri) =>
       mat(ri)(ci).toDouble
     } .sum
